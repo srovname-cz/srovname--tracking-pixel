@@ -1,5 +1,5 @@
 homepage: "https://www.srovname.cz/"
 documentation: "https://www.srovname.cz/muj-obchod/tracking-pixel/jak-implementovat"
 versions:
-  - sha: 9055b36862c83a7b4989129336716753b7a7a199
+  - sha: 928902883a04256dc0b4e3a726fb1d8a8fda6a3a
     changeNotes: Initial release.
