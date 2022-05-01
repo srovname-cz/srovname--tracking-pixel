@@ -134,7 +134,7 @@ const onFailure = function () {
   data.gtmOnFailure();
 };
 
-injectScript('https://tracking.srovname.cz/srovnamepixel_test.js', onSuccess, onFailure);
+injectScript('https://tracking.srovname.cz/srovnamepixel.js', onSuccess, onFailure);
 
 
 ___WEB_PERMISSIONS___
@@ -275,7 +275,7 @@ ___WEB_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "https://tracking.srovname.cz/srovnamepixel_test.js"
+                "string": "https://tracking.srovname.cz/srovnamepixel.js"
               }
             ]
           }
@@ -297,6 +297,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 1. 5. 2022 22:58:18
+Created on 1. 5. 2022 23:06:57
 
 
