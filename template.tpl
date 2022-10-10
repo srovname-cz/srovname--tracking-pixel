@@ -14,7 +14,6 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "Srovnáme.cz Tracking Pixel",
-  "categories": ["CONVERSIONS"],
   "brand": {
     "id": "brand_dummy",
     "displayName": "",
@@ -37,19 +36,6 @@ ___TEMPLATE_PARAMETERS___
     "simpleValueType": true,
     "notSetText": "Zadejte ID vašeho eshopu, které naleznete v klientské sekci",
     "help": "ID e-shopu najdete v klientské sekci"
-  },
-  {
-    "type": "SELECT",
-    "name": "action",
-    "displayName": "Akce",
-    "macrosInSelect": false,
-    "selectItems": [
-      {
-        "value": "purchase",
-        "displayValue": "Odeslání objednávky (purchase)"
-      }
-    ],
-    "simpleValueType": true
   },
   {
     "type": "GROUP",
@@ -92,6 +78,24 @@ ___TEMPLATE_PARAMETERS___
         "type": "EQUALS"
       }
     ]
+  },
+  {
+    "type": "SELECT",
+    "name": "action",
+    "displayName": "Akce",
+    "macrosInSelect": false,
+    "selectItems": [
+      {
+        "value": "purchase",
+        "displayValue": "Odeslání objednávky (purchase) - odešle objednávku, potřeba volat na stránce po odeslání objednávky"
+      },
+      {
+        "value": "init",
+        "displayValue": "Inicializace - nastaví základní info o návštěvníkovi, potřeba volat na každé stránce"
+      }
+    ],
+    "simpleValueType": true,
+    "defaultValue": "init"
   }
 ]
 
@@ -101,24 +105,11 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 const injectScript = require('injectScript');
 const callInWindow = require('callInWindow');
 const log = require('logToConsole');
-const set = require('setInWindow');
-const createArgumentsQueue = require('createArgumentsQueue');
-
-//const srovname = createArgumentsQueue('srovname', 'srovname.queue');
-
-
-let srovname = function () {
-  createArgumentsQueue('srovname', 'srovname');
-};
-
-set('srovname', srovname);
-set('srovname.queue', []);
 
 const onSuccess = function () {
-  callInWindow('srovname', 'init', data.shopId);
-
+  callInWindow('srovname', 'init', data.action);
   if (data.action === 'purchase') {        
-    callInWindow('srovname', 'purchase', { 
+    callInWindow('srovname', 'event', 'purchase', { 
       transaction_id : data.transactionId, 
       value : data.price, 
       currency: data.currency, 
@@ -134,7 +125,7 @@ const onFailure = function () {
   data.gtmOnFailure();
 };
 
-injectScript('https://tracking.srovname.cz/srovnamepixel.js', onSuccess, onFailure);
+injectScript('https://tracking.srovname.cz/srovnamepixel-gtm.js', onSuccess, onFailure);
 
 
 ___WEB_PERMISSIONS___
@@ -275,7 +266,7 @@ ___WEB_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "https://tracking.srovname.cz/srovnamepixel.js"
+                "string": "https://tracking.srovname.cz/srovnamepixel-gtm.js"
               }
             ]
           }
@@ -297,6 +288,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 1. 5. 2022 23:06:57
+Created on 01. 10. 2022 7:29:02
 
 
